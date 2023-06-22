@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+}
+
+#banner {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 10%;
+    justify-content: baseline;
+    text-align: center;
+    border-radius: 3%;
+    background-color: black;
+    color: white;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#banner img {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#banner img:first-child {
+    float: left;
+    margin-top: 1%;
+}
+
+#banner img:last-child {
+    display: inline-block;
+    vertical-align: middle;
+    float: right;
+    margin-top: 1%;
+}
+
+#selectskaters {
+    background-color: lightgray;
+    color: black;
+    width: 100px;
+    height: 60px;
+    border-radius: 10%;
+    font-size: 14px;
+    margin-top: 40%;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
