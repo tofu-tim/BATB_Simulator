@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="batbgamesim.css">
+</head>
+
+<body>
+    <div id="banner">
+        <img src="berricslogo.jpg" alt="Berrics Logo" />
+        <h1>Battle at the Berrics Simulator</h1>
+        <img src="berricslogo.jpg" alt="Berrics Logo" />
+    </div>
+
+    <div id="skaters-info">
+        <h2 id="battle-info" class="gray-text"></h2>
+    </div>
+
+    <script>
+        const selectedSkaters = JSON.parse(localStorage.getItem('selectedSkaters'));
+
+        const battleInfo = document.getElementById("battle-info");
+        const skatersInfo = selectedSkaters.join(" vs ");
+        battleInfo.innerHTML = skatersInfo.replace(' vs ', ' <u>vs</u> ');
+
+        // Clear localStorage after retrieving the selected skaters
+        localStorage.removeItem('selectedSkaters');
+    </script>
+</body>
+
+</html>
