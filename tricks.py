@@ -1,40 +1,41 @@
-from flask import render_template, redirect, request
-from flask_app import app
-from flask_app.models.skaters import Dojo
-from flask_app.models.tricks import Ninja
+from flask_app.config.mysqlconnection import connectToMySQL
+# from flask_app.models.dojo import Dojo
 
-@app.route('/')
-def index():
-    return render_template("dojos_main.html")
+class Ninja:
+    db = 'skaters_and_tricks'
+    def __init__(self, data):
+        self.id = data['id']
+        self.trick_name = data['trick_name']
+        self.difficulty = data['difficulty']
+        self.skater_id = data['skater_id'] 
 
-@app.route('/ninjas')
-def ninjas():
-    ninjas = Ninja.get_all()
-    return render_template('ninja.html', ninjas=ninjas)
+    @classmethod
+    def get_all(cls):
+        query = "SELECT * FROM tricks;"
+        results = connectToMySQL(db).query_db(query)
+        tricks = []
+        for trick in results:
+            trick.append( cls(trick) )
+        return tricks
 
-@app.route('/new/ninja')
-def new_ninja():
-    dojos = Dojo.get_all()
-    return render_template('new_ninja.html', dojos=dojos)
+    @classmethod
+    def save(cls, data):
+        query = "INSERT INTO tricks (trick_name,difficulty,skater_id) VALUES (%(trick_name)s,%(difficulty)s,%(skater_id)s);"
+        result = connectToMySQL(db).query_db(query,data)
+        return result
 
-@app.route('/create/ninja', methods=['POST'])
-def create_ninja():
-    Ninja.save(request.form)
-    return redirect('/')
+    @classmethod
+    def get_trick(cls,data):
+        query  = "SELECT * FROM tricks WHERE id = %(id)s;"
+        result = connectToMySQL(db).query_db(query,data)
+        return cls(result[0])
 
+    @classmethod
+    def update(cls,data):
+        query = "UPDATE tricks SET trick_name=%(trick_name)s,difficulty=%(difficulty)s,skater_id=%(skater_id)s,updated_at=NOW() WHERE id = %(id)s;"
+        return connectToMySQL(db).query_db(query,data)
 
-
-# @app.route('/ninjas/edit/<ninja_id>')
-# def edit_page(ninja_id):
-#     print("Editing ninja id:", ninja_id)
-#     return render_template('edit_ninja.html', ninja=ninja)
-
-# @app.route('/ninjas/delete/<ninja_id>/<dojo_id>')
-# def delete_ninja(ninja_id, dojo_id):
-#     print("Deleting ninja id:", ninja_id)
-#     return redirect(f'/dojos/{dojo_id}')
-
-# @app.route('/ninjas/update/<dojo_id>', methods=["POST"])
-# def update_ninja(dojo_id):
-#     print("Updating ninja information: ", request.form)
-#     return redirect(f'/dojos/{dojo_id}')
+    @classmethod
+    def destroy(cls,data):
+        query  = "DELETE FROM tricks WHERE id = %(id)s;"
+        return connectToMySQL(db).query_db(query,data)
